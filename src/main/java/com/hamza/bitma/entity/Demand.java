@@ -25,7 +25,7 @@ public class Demand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
+    @ManyToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User userId;
 

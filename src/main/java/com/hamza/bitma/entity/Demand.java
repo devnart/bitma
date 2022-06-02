@@ -10,9 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table
@@ -39,12 +38,12 @@ public class Demand {
     private Boolean availability;
 
     @Nullable
-    private Date availableFrom;
+    private LocalDate availableFrom;
 
     @CreationTimestamp
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @UpdateTimestamp
-    private LocalDate lastUpdate;
+    private LocalDateTime lastUpdate;
 
 }

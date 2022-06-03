@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Data
 public class DemandDto {
     private long id;
-    private long userId;
+//    private long user;
     private String title;
     private String description;
     private String city;

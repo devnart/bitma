@@ -7,7 +7,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -28,9 +31,9 @@ public class User {
     private String password;
 
     @CreationTimestamp
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @UpdateTimestamp
-    private LocalDate lastUpdate;
+    private LocalDateTime lastUpdate;
 
 }

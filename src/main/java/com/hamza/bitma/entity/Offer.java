@@ -11,6 +11,7 @@ import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -30,8 +31,8 @@ public class Offer {
 
     private String title;
     private String description;
-    private String City;
-    private String Address;
+    private String city;
+    private String address;
     private Double price;
     private int places;
     private int rooms;
@@ -41,11 +42,11 @@ public class Offer {
     private Boolean availability;
 
     @Nullable
-    private Date availableFrom;
+    private LocalDate availableFrom;
 
     @CreationTimestamp
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 
     @UpdateTimestamp
-    private LocalDate lastUpdate;
+    private LocalDateTime lastUpdate;
 }

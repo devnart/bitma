@@ -18,9 +18,13 @@ public class OfferImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne(targetEntity = Offer.class,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "OfferId", referencedColumnName = "id")
-    private User OfferId;
+//    @OneToOne(targetEntity = Offer.class,cascade = CascadeType.MERGE)
+//    @JoinColumn(name = "OfferId", referencedColumnName = "id")
+    private Long offerId;
 
     private String image;
+
+    public static String getImageUrl(OfferImage offerImage) {
+        return offerImage.getImage();
+    }
 }

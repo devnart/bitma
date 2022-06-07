@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Data
 public class OfferDto {
     private Long id;
-    private Long user;
     private String title;
     private String description;
     private String City;

@@ -6,7 +6,6 @@ import com.hamza.bitma.dto.model.OfferDto;
 import com.hamza.bitma.entity.Offer;
 import com.hamza.bitma.entity.User;
 import com.hamza.bitma.repository.OfferRepository;
-import com.hamza.bitma.repository.UserRepository;
 import com.hamza.bitma.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-
-import static com.hamza.bitma.util.FileUtil.createDirIfNotExist;
 
 @Service
 @Slf4j
@@ -34,6 +30,8 @@ public class OfferService {
     private final IMapperDto<Offer, OfferDto> offerMapper;
     private final MapString<Map<String,String>,Offer> mapString;
     private final OfferImageService offerImageService;
+
+
     public List<OfferDto> getAllOffers() {
         log.info("getAllOffers");
         return offerMapper.convertListToListDto(offerRepository.findAll(), OfferDto.class);
@@ -64,5 +62,13 @@ public class OfferService {
         Offer offerSaved = offerRepository.save(offer);
         offerImageService.saveOfferImages(offerSaved.getId(), fileNames);
         return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
+    }
+
+    public ResponseEntity<List<OfferDto>> getByUserId(Long id) {
+        List<Offer> offers = offerRepository.findAllByUserId(id);
+        if(offers.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(offerMapper.convertListToListDto(offers,OfferDto.class));
     }
 }

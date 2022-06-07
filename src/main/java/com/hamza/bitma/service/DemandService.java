@@ -32,6 +32,7 @@ public class DemandService {
     public Demand createDemand(Demand demand) {
         log.info("DemandService.createDemand()" + demand);
 //        Demand demand = demandMapper.convertToEntity(demandDto, Demand.class);
+
         return demandRepository.save(demand);
 //        return demandMapper.convertToDto(demand, DemandDto.class);
     }

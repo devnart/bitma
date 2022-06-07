@@ -4,7 +4,9 @@ import com.hamza.bitma.dto.mapper.MapString;
 import com.hamza.bitma.dto.mapperInterface.IMapperDto;
 import com.hamza.bitma.dto.model.OfferDto;
 import com.hamza.bitma.entity.Offer;
+import com.hamza.bitma.entity.User;
 import com.hamza.bitma.repository.OfferRepository;
+import com.hamza.bitma.repository.UserRepository;
 import com.hamza.bitma.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import static com.hamza.bitma.util.FileUtil.createDirIfNotExist;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +30,7 @@ public class OfferService {
 
 
     private final OfferRepository offerRepository;
+    private final UserService userService;
     private final IMapperDto<Offer, OfferDto> offerMapper;
     private final MapString<Map<String,String>,Offer> mapString;
     private final OfferImageService offerImageService;
@@ -36,8 +41,7 @@ public class OfferService {
 
     public ResponseEntity<String> createOffer(Map<String,String> offerDto, MultipartFile[] files) {
 
-
-        createDirIfNotExist();
+        FileUtil.createDirIfNotExist();
         List<String> fileNames = new ArrayList<>();
 
         Arrays.stream(files).forEach(file -> {
@@ -55,16 +59,10 @@ public class OfferService {
         });
 
         Offer offer = mapString.convertToEntity(offerDto, Offer.class);
+        User user = userService.findById(Long.parseLong(offerDto.get("user")));
+        offer.setUser(user);
         Offer offerSaved = offerRepository.save(offer);
         offerImageService.saveOfferImages(offerSaved.getId(), fileNames);
         return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
-    }
-
-    private void createDirIfNotExist() {
-        //create directory to save the files
-        File directory = new File(FileUtil.folderPath);
-        if (! directory.exists()){
-            directory.mkdir();
-        }
     }
 }

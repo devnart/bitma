@@ -1,16 +1,14 @@
 package com.hamza.bitma.dto.model;
 
-import com.hamza.bitma.enumeration.RoomType;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class OfferDto {
     private Long id;
-    private String userId;
+    private Long user;
     private String title;
     private String description;
     private String City;

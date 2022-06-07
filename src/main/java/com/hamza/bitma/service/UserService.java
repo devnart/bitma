@@ -29,4 +29,8 @@ public class UserService {
         log.info("Retrieving all users");
         return userMapper.convertListToListDto(userRepository.findAll(), UserDto.class);
     }
+
+    public User findById(long id) {
+        return userRepository.getById(id);
+    }
 }

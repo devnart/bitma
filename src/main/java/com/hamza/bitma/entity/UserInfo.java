@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
@@ -13,6 +15,8 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicUpdate
+@DynamicInsert
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +24,7 @@ public class UserInfo {
 
     @OneToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId", referencedColumnName = "id")
-    private User userId;
+    private Long user;
 
     private String firstName;
     private String lastName;

@@ -21,4 +21,10 @@ public class UserController {
     public Iterable<UserDto> getAllUsers() {
         return userService.findAll();
     }
+
+    @GetMapping("/{username}")
+    public UserDto getUserByUsername(@PathVariable String username) {
+        return userService.findByUsername(username);
+    }
+
 }

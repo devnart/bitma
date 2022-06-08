@@ -23,7 +23,7 @@ public class UserInfo {
     private long id;
 
     @OneToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
+    @JoinColumn(name = "userId", referencedColumnName = "id",unique = true)
     private User user;
 
     private String firstName;

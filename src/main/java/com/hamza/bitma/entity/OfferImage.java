@@ -18,8 +18,6 @@ public class OfferImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @OneToOne(targetEntity = Offer.class,cascade = CascadeType.MERGE)
-//    @JoinColumn(name = "OfferId", referencedColumnName = "id")
     private Long offerId;
 
     private String image;

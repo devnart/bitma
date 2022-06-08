@@ -1,5 +1,6 @@
 package com.hamza.bitma.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,6 +29,7 @@ public class User {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     @CreationTimestamp

@@ -32,4 +32,20 @@ public class OfferController {
         return offerService.getByUserId(id);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<OfferDto> getOfferById(@PathVariable Long id) {
+        return offerService.getOfferById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteOffer(@PathVariable Long id) {
+        return offerService.deleteOffer(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateOffer(@PathVariable Long id, @RequestBody OfferDto offerDto) {
+        return offerService.updateOffer(id, offerDto);
+    }
+
+
 }

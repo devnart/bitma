@@ -37,10 +37,13 @@ public class DemandService {
 //        return demandMapper.convertToDto(demand, DemandDto.class);
     }
 
-    public List<DemandDto> getAllDemandsByUserId(Long userId) {
+    public ResponseEntity<List<DemandDto>> getAllDemandsByUserId(Long userId) {
         log.info("DemandService.getAllDemandsByUserId()");
         List<Demand> demands = demandRepository.findAllByUserId(userId);
-        return demandMapper.convertListToListDto(demands, DemandDto.class);
+        if (demands.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(demandMapper.convertListToListDto(demands, DemandDto.class));
     }
 
     public void deleteDemand(Long id) {
@@ -67,5 +70,15 @@ public class DemandService {
 
         demandRepository.save(demand.get());
         return ResponseEntity.ok("Demand updated successfully");
+    }
+
+    public ResponseEntity<DemandDto> getDemandById(Long id) {
+        log.info("DemandService.getDemandById()");
+        Optional<Demand> demand = demandRepository.findById(id);
+        if (demand.isEmpty()) {
+            return ResponseEntity.status(404).build();
+        } else {
+            return ResponseEntity.ok(demandMapper.convertToDto(demand.get(), DemandDto.class));
+        }
     }
 }

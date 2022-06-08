@@ -1,17 +1,19 @@
 package com.hamza.bitma.service;
 
+import com.hamza.bitma.entity.Offer;
 import com.hamza.bitma.entity.OfferImage;
 import com.hamza.bitma.repository.OfferImageRepository;
+import com.hamza.bitma.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +27,29 @@ public class OfferImageService {
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
-    public void saveOfferImages(Long offerId, List<String> images) {
+    public void saveOfferImages(Long offerId, MultipartFile[] files) {
 
-        images.forEach(image -> {
-            OfferImage offerImage = new OfferImage();
-            offerImage.setOfferId(offerId);
-            offerImage.setImage(image);
-            offerImageRepository.save(offerImage);
+        FileUtil.createDirIfNotExist();
+        List<OfferImage> offerImages = new ArrayList<>();
+        Arrays.stream(files).forEach(file -> {
+            byte[] bytes;
+            try {
+                bytes = file.getBytes();
+                String extension = FileUtil.getExtension(Objects.requireNonNull(file.getOriginalFilename()));
+                String fileName = UUID.randomUUID() + extension;
+                Files.write(Paths.get(FileUtil.folderPath + fileName), bytes);
+
+                OfferImage offerImage = new OfferImage();
+                offerImage.setImage(fileName);
+                offerImage.setOfferId(offerId);
+                offerImages.add(offerImage);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
+
+        offerImageRepository.saveAll(offerImages);
     }
 
     public ResponseEntity<byte[]> getImage(String image) {

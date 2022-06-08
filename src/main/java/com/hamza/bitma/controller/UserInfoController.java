@@ -27,4 +27,9 @@ public class UserInfoController {
     public ResponseEntity<String> saveUserAvatar(@RequestParam MultipartFile avatar, @RequestParam Long userId) {
         return userInfoService.saveUserAvatar(avatar, userId);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<String> deleteUserInfo(@PathVariable Long userId) {
+        return userInfoService.deleteUserInfo(userId);
+    }
 }

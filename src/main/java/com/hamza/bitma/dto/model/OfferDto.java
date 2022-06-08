@@ -10,8 +10,8 @@ public class OfferDto {
     private Long id;
     private String title;
     private String description;
-    private String City;
-    private String Address;
+    private String city;
+    private String address;
     private Double price;
     private int places;
     private int rooms;

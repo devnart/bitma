@@ -29,10 +29,14 @@ public class DemandController {
     }
 
     @GetMapping("/user/{id}")
-    public List<DemandDto> getDemandsByUserId(@PathVariable Long id) {
+    public ResponseEntity<List<DemandDto>> getDemandsByUserId(@PathVariable Long id) {
         return demandService.getAllDemandsByUserId(id);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DemandDto> getDemandById(@PathVariable Long id) {
+        return demandService.getDemandById(id);
+    }
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDemand(@PathVariable Long id) {

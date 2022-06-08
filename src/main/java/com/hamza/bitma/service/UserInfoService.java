@@ -6,6 +6,7 @@ import com.hamza.bitma.entity.UserInfo;
 import com.hamza.bitma.repository.UserInfoRepository;
 import com.hamza.bitma.util.FileUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,19 @@ import java.nio.file.Paths;
 import java.util.Objects;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserInfoService {
     private final UserInfoRepository userInfoRepository;
     private final IMapperDto<UserInfo,UserInfoDto> userInfoMapper;
 
     public UserInfoDto getUserInfo(Long userId) {
-        UserInfo userInfo = userInfoRepository.findByUser(userId);
+        UserInfo userInfo = userInfoRepository.findByUserId(userId);
         return userInfoMapper.convertToDto(userInfo, UserInfoDto.class);
     }
 
     public UserInfoDto saveUserInfo(UserInfoDto userInfoDto) {
+        log.warn("saveUserInfo" + userInfoDto);
         UserInfo userInfo = userInfoMapper.convertToEntity(userInfoDto, UserInfo.class);
         userInfo = userInfoRepository.save(userInfo);
         return userInfoMapper.convertToDto(userInfo, UserInfoDto.class);
@@ -34,18 +37,36 @@ public class UserInfoService {
 
 
     public ResponseEntity<String> saveUserAvatar(MultipartFile avatar, Long userId) {
-        FileUtil.createDirIfNotExist();
-        String fileName = userId + FileUtil.getExtension(Objects.requireNonNull(avatar.getOriginalFilename()));
-        String filePath = FileUtil.folderPath + "/avatars" + fileName;
+
+        UserInfo userInfo = userInfoRepository.findByUserId(userId);
+
+        if (Objects.isNull(userInfo)) {
+            return new ResponseEntity<>("UserInfo not found", HttpStatus.NOT_FOUND);
+        }
+
+        String username = userInfo.getUser().getUsername();
+        FileUtil.createAvatarDirIfNotExist();
+        String fileName = username + FileUtil.getExtension(Objects.requireNonNull(avatar.getOriginalFilename()));
+        String filePath = FileUtil.avatarFolderPath  + fileName;
+
         try {
             avatar.transferTo(Paths.get(filePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        UserInfo userInfo = userInfoRepository.findByUser(userId);
+
         userInfo.setAvatar(fileName);
         userInfoRepository.save(userInfo);
 
-        return new ResponseEntity<>("Success", HttpStatus.OK);
+        return new ResponseEntity<>(fileName, HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> deleteUserInfo(Long userId) {
+        try {
+            userInfoRepository.deleteById(userId);
+            return new ResponseEntity<>("UserInfo deleted successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("UserInfo not found", HttpStatus.NOT_FOUND);
+        }
     }
 }

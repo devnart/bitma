@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 uploads/
 
+firebase_config.json
 ### STS ###
 .apt_generated
 .classpath

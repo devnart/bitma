@@ -5,6 +5,8 @@ import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -46,6 +48,15 @@ public class MapperDto <E, D> implements IMapperDto<E, D> {
             return Collections.emptyList();
 
         return entityList.stream().map(entity -> convertToDto(entity, outCLass)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<D> convertPageToPageDto(Page<E> entityList, Class<D> outClass) {
+        if(entityList == null)
+            return Page.empty();
+
+        List<D> all =  entityList.stream().map(entity -> convertToDto(entity,outClass)).collect(Collectors.toList());
+        return new PageImpl<>(all);
     }
 
     @Override

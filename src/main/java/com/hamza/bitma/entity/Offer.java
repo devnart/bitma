@@ -1,18 +1,21 @@
 package com.hamza.bitma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.hamza.bitma.enumeration.RoomType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table
@@ -20,16 +23,20 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Offer {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Offer implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
 
-    @ManyToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
+    @ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REFRESH})
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
+    private String type = "offer";
     private String title;
     private String description;
     private String city;
@@ -39,10 +46,16 @@ public class Offer {
     private int rooms;
     private RoomType roomType;
 
+
+    @OneToMany(targetEntity = OfferImage.class, mappedBy = "offer",cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<OfferImage> images;
+
     @Nullable
     private Boolean availability;
 
     @Nullable
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate availableFrom;
 
     @CreationTimestamp

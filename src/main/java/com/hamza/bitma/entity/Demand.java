@@ -1,5 +1,6 @@
 package com.hamza.bitma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hamza.bitma.enumeration.RoomType;
 import lombok.AllArgsConstructor;
@@ -28,11 +29,12 @@ public class Demand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "userId", referencedColumnName = "id")
     private User user;
 
+    private String type = "demand";
     private String title;
     private String description;
     private String city;
@@ -43,12 +45,15 @@ public class Demand {
     private Boolean availability;
 
     @Nullable
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate availableFrom;
 
     @CreationTimestamp
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDateTime lastUpdate;
 
 }

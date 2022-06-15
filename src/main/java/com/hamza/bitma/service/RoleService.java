@@ -18,7 +18,6 @@ public class RoleService {
 
     private final FirebaseAuth firebaseAuth;
 
-
     public void assignRole(List<ERole> requestRoles, String uid) throws FirebaseAuthException {
         try {
             List<String> roles = requestRoles

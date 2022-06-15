@@ -1,5 +1,6 @@
 package com.hamza.bitma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -36,9 +37,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @CreationTimestamp
     private LocalDateTime createdDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
 

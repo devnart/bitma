@@ -9,11 +9,15 @@ import com.hamza.bitma.enumeration.RoomType;
 import com.hamza.bitma.repository.OfferRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -30,13 +34,17 @@ public class OfferService {
     private final OfferImageService offerImageService;
 
 
-    public List<OfferDto> getAllOffers() {
+    public Page<OfferDto> getAllOffers(int page,int size) {
         log.info("getAllOffers");
-        return offerMapper.convertListToListDto(offerRepository.findAll(), OfferDto.class);
+        Pageable pageable = PageRequest.of(page, size);
+        return offerMapper.convertPageToPageDto(offerRepository.findAll(pageable), OfferDto.class);
     }
 
     public ResponseEntity<String> createOffer(Map<String,String> offerDto, MultipartFile[] files) {
         Offer offer = mapString.convertToEntity(offerDto, Offer.class);
+
+        offer.setAvailableFrom(LocalDate.parse(offerDto.get("availableFrom")));
+        System.out.println("createOffer" + offer.getAvailableFrom());
 
         User user = userService.findById(Long.parseLong(offerDto.get("user")));
 
@@ -45,7 +53,7 @@ public class OfferService {
         }
         offer.setUser(user);
         Offer offerSaved = offerRepository.save(offer);
-        offerImageService.saveOfferImages(offerSaved.getId(), files);
+        offerImageService.saveOfferImages(offerSaved, files);
         return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
     }
 

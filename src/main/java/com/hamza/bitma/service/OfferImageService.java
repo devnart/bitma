@@ -27,7 +27,7 @@ public class OfferImageService {
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
-    public void saveOfferImages(Long offerId, MultipartFile[] files) {
+    public void saveOfferImages(Offer offer, MultipartFile[] files) {
 
         FileUtil.createDirIfNotExist();
         List<OfferImage> offerImages = new ArrayList<>();
@@ -41,7 +41,7 @@ public class OfferImageService {
 
                 OfferImage offerImage = new OfferImage();
                 offerImage.setImage(fileName);
-                offerImage.setOfferId(offerId);
+                offerImage.setOffer(offer);
                 offerImages.add(offerImage);
 
             } catch (IOException e) {

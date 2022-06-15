@@ -7,9 +7,13 @@ import com.hamza.bitma.enumeration.RoomType;
 import com.hamza.bitma.repository.DemandRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,10 +27,11 @@ public class DemandService {
     private final IMapperDto<Demand, DemandDto> demandMapper;
 
 
-    public List<DemandDto> getAllDemands() {
+    public Page<DemandDto> getAllDemands(int page,int size) {
         log.info("DemandService.getAllDemands()");
-        List<Demand> demands =  demandRepository.findAll();
-        return demandMapper.convertListToListDto(demands, DemandDto.class);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Demand> demands =  demandRepository.findAll(pageable);
+        return demandMapper.convertPageToPageDto(demands, DemandDto.class);
     }
 
     public Demand createDemand(Demand demand) {

@@ -1,8 +1,10 @@
 package com.hamza.bitma.controller;
 
 import com.hamza.bitma.dto.model.OfferDto;
+import com.hamza.bitma.entity.Offer;
 import com.hamza.bitma.service.OfferService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +20,9 @@ public class OfferController {
     private final OfferService offerService;
 
     @GetMapping("/all")
-    public List<OfferDto> getAllOffers() {
-        return offerService.getAllOffers();
+    public Page<OfferDto> getAllOffers(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "3") int size) {
+        return offerService.getAllOffers(page, size);
     }
 
     @PostMapping

@@ -4,6 +4,7 @@ import com.hamza.bitma.dto.model.DemandDto;
 import com.hamza.bitma.entity.Demand;
 import com.hamza.bitma.service.DemandService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +19,9 @@ public class DemandController {
     private final DemandService demandService;
 
     @GetMapping("/all")
-    public List<DemandDto> getAllDemands() {
-        return demandService.getAllDemands();
+    public Page<DemandDto> getAllDemands(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "3") int size) {
+        return demandService.getAllDemands(page, size);
     }
 
     @PostMapping

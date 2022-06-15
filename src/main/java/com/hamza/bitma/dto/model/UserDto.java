@@ -1,5 +1,6 @@
 package com.hamza.bitma.dto.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -10,6 +11,8 @@ public class UserDto {
     private String username;
     private String password;
     private String email;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastUpdate;
 }

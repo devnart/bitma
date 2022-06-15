@@ -1,9 +1,6 @@
 package com.hamza.bitma.service;
 
-import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
+import com.google.firebase.auth.*;
 import com.hamza.bitma.dto.model.UserDto;
 import com.hamza.bitma.enumeration.ERole;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +16,13 @@ import java.util.List;
 public class AuthService {
 
     private final RoleService roleService;
+
+    public String login(String idToken) throws FirebaseAuthException {
+
+        System.out.println("idToken: " + idToken);
+        FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+        return decodedToken.getUid();
+    }
 
     public ResponseEntity<String> register(UserDto userDto) throws Exception {
         try {

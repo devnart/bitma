@@ -50,4 +50,9 @@ public class DemandController {
     public ResponseEntity<String> updateDemand(@PathVariable Long id, @RequestBody DemandDto demandDto) {
         return demandService.updateDemand(id, demandDto);
     }
+
+    @GetMapping("/city/{city}")
+    public ResponseEntity<Page<DemandDto>> getByCity(@PathVariable String city) {
+        return demandService.getAllByCity(city);
+    }
 }

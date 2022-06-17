@@ -50,5 +50,11 @@ public class OfferController {
         return offerService.updateOffer(id, offerDto);
     }
 
+    @GetMapping("/city/{city}")
+    public ResponseEntity<Page<OfferDto>> getByCity(@PathVariable String city) {
+        return offerService.getAllByCity(city);
+    }
+
+
 
 }

@@ -86,4 +86,11 @@ public class DemandService {
             return ResponseEntity.ok(demandMapper.convertToDto(demand.get(), DemandDto.class));
         }
     }
+
+    public ResponseEntity<Page<DemandDto>> getAllByCity(String city) {
+        log.info("DemandService.getAllByCity()");
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Demand> demands = demandRepository.findAllByCity(city, pageable);
+        return ResponseEntity.ok(demandMapper.convertPageToPageDto(demands, DemandDto.class));
+    }
 }

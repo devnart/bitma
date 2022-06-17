@@ -104,4 +104,13 @@ public class OfferService {
         }
         return ResponseEntity.status(HttpStatus.OK).body("Offer updated successfully");
     }
+
+    public ResponseEntity<Page<OfferDto>> getAllByCity(String city) {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Offer> offers = offerRepository.findAllByCity(city, pageable);
+        if(offers.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.ok(offerMapper.convertPageToPageDto(offers,OfferDto.class));
+    }
 }

@@ -21,7 +21,7 @@ public class OfferController {
 
     @GetMapping("/all")
     public Page<OfferDto> getAllOffers(@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "3") int size) {
+                                       @RequestParam(defaultValue = "10") int size) {
         return offerService.getAllOffers(page, size);
     }
 

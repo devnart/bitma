@@ -52,6 +52,7 @@ public class OfferService {
             return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
         }
         offer.setUser(user);
+        offer.setCity(offer.getCity().toLowerCase());
         Offer offerSaved = offerRepository.save(offer);
         offerImageService.saveOfferImages(offerSaved, files);
         return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");

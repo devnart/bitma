@@ -1,5 +1,6 @@
 package com.hamza.bitma.controller;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.hamza.bitma.dto.model.UserInfoDto;
 import com.hamza.bitma.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserInfoController {
 
     private final UserInfoService userInfoService;
+
     @GetMapping("{userId}")
-    public UserInfoDto getUserInfo(@PathVariable Long userId) {
+    public UserInfoDto getUserInfo(@PathVariable String userId) {
         return userInfoService.getUserInfo(userId);
     }
 
@@ -24,7 +26,7 @@ public class UserInfoController {
     }
 
     @PostMapping("/avatar")
-    public ResponseEntity<String> saveUserAvatar(@RequestParam MultipartFile avatar, @RequestParam Long userId) {
+    public ResponseEntity<String> saveUserAvatar(@RequestParam MultipartFile avatar, @RequestParam String userId) throws FirebaseAuthException {
         return userInfoService.saveUserAvatar(avatar, userId);
     }
 

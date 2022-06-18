@@ -15,12 +15,12 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "3") int size){
+    public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page , @RequestParam(defaultValue = "10") int size){
         return productService.getProducts(page, size);
     }
 
     @GetMapping("/city/{city}")
-    public Page<Product> getProductsByCity(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "3") int size, @PathVariable String city){
+    public Page<Product> getProductsByCity(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @PathVariable String city){
         return productService.getProductsByCity(page, size, city);
     }
 

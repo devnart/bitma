@@ -21,11 +21,7 @@ public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @OneToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
-    @JoinColumn(name = "userId", referencedColumnName = "id",unique = true)
-    private User user;
-
+    private String userId;
     private String firstName;
     private String lastName;
     private String phone;

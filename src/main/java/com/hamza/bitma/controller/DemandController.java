@@ -20,7 +20,7 @@ public class DemandController {
 
     @GetMapping("/all")
     public Page<DemandDto> getAllDemands(@RequestParam(defaultValue = "0") int page,
-                                         @RequestParam(defaultValue = "3") int size) {
+                                         @RequestParam(defaultValue = "10") int size) {
         return demandService.getAllDemands(page, size);
     }
 

@@ -1,5 +1,7 @@
 package com.hamza.bitma.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.hamza.bitma.dto.mapperInterface.IMapperDto;
 import com.hamza.bitma.dto.model.UserInfoDto;
 import com.hamza.bitma.entity.UserInfo;
@@ -23,7 +25,7 @@ public class UserInfoService {
     private final UserInfoRepository userInfoRepository;
     private final IMapperDto<UserInfo,UserInfoDto> userInfoMapper;
 
-    public UserInfoDto getUserInfo(Long userId) {
+    public UserInfoDto getUserInfo(String userId) {
         UserInfo userInfo = userInfoRepository.findByUserId(userId);
         return userInfoMapper.convertToDto(userInfo, UserInfoDto.class);
     }
@@ -36,7 +38,7 @@ public class UserInfoService {
     }
 
 
-    public ResponseEntity<String> saveUserAvatar(MultipartFile avatar, Long userId) {
+    public ResponseEntity<String> saveUserAvatar(MultipartFile avatar, String userId) throws FirebaseAuthException {
 
         UserInfo userInfo = userInfoRepository.findByUserId(userId);
 
@@ -44,7 +46,7 @@ public class UserInfoService {
             return new ResponseEntity<>("UserInfo not found", HttpStatus.NOT_FOUND);
         }
 
-        String username = userInfo.getUser().getUsername();
+        String username = FirebaseAuth.getInstance().getUser(userId).getDisplayName();
         FileUtil.createAvatarDirIfNotExist();
         String fileName = username + FileUtil.getExtension(Objects.requireNonNull(avatar.getOriginalFilename()));
         String filePath = FileUtil.avatarFolderPath  + fileName;
@@ -58,7 +60,7 @@ public class UserInfoService {
         userInfo.setAvatar(fileName);
         userInfoRepository.save(userInfo);
 
-        return new ResponseEntity<>(fileName, HttpStatus.OK);
+        return new ResponseEntity<>(fileName, HttpStatus.CREATED);
     }
 
     public ResponseEntity<String> deleteUserInfo(Long userId) {

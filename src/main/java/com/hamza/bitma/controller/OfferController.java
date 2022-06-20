@@ -26,7 +26,7 @@ public class OfferController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createOffer(@RequestParam("images") MultipartFile[] files, @RequestParam Map<String, String> offerDto) {
+    public ResponseEntity<OfferDto> createOffer(@RequestParam("images") MultipartFile[] files, @RequestParam Map<String, String> offerDto) {
         return offerService.createOffer(offerDto, files);
     }
 

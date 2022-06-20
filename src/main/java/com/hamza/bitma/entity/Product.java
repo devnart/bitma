@@ -1,11 +1,13 @@
 package com.hamza.bitma.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,7 +27,8 @@ public class Product {
     private String city;
     private Double price;
     private boolean availability;
-    private Date available_from;
-    private Date created_date;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDateTime available_from;
+    private LocalDateTime created_date;
 
 }

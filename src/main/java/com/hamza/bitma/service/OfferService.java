@@ -40,7 +40,7 @@ public class OfferService {
         return offerMapper.convertPageToPageDto(offerRepository.findAll(pageable), OfferDto.class);
     }
 
-    public ResponseEntity<String> createOffer(Map<String,String> offerDto, MultipartFile[] files) {
+    public ResponseEntity<OfferDto> createOffer(Map<String,String> offerDto, MultipartFile[] files) {
         Offer offer = mapString.convertToEntity(offerDto, Offer.class);
 
         offer.setAvailableFrom(LocalDate.parse(offerDto.get("availableFrom")));
@@ -49,13 +49,13 @@ public class OfferService {
         User user = userService.findById(Long.parseLong(offerDto.get("user")));
 
         if( user == null) {
-            return new ResponseEntity<>("User not found", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("User not found", HttpStatus.BAD_REQUEST);
         }
         offer.setUser(user);
         offer.setCity(offer.getCity().toLowerCase());
         Offer offerSaved = offerRepository.save(offer);
         offerImageService.saveOfferImages(offerSaved, files);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Offer created successfully");
+        return ResponseEntity.status(HttpStatus.CREATED).body(offerMapper.convertToDto(offerSaved, OfferDto.class));
     }
 
     public ResponseEntity<List<OfferDto>> getByUserId(Long id) {

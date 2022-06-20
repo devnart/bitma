@@ -38,6 +38,7 @@ public class Offer implements Serializable {
 
     private String type = "offer";
     private String title;
+    @Column(columnDefinition="TEXT")
     private String description;
     private String city;
     private String address;

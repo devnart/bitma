@@ -30,11 +30,7 @@ public class Offer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
-    @ManyToOne(targetEntity = User.class,cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REFRESH})
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-    private User user;
+    private String userId;
 
     private String type = "offer";
     private String title;

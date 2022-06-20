@@ -3,12 +3,12 @@ package com.hamza.bitma.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -18,10 +18,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-    private User user;
+    private String userId;
 
     private String type;
     private String city;
@@ -29,6 +26,7 @@ public class Product {
     private boolean availability;
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDateTime available_from;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created_date;
 
 }

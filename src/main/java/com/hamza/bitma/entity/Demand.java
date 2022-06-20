@@ -29,10 +29,7 @@ public class Demand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @ManyToOne(targetEntity = User.class,cascade = CascadeType.MERGE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "userId", referencedColumnName = "id")
-    private User user;
+    private String userId;
 
     private String type = "demand";
     private String title;

@@ -1,5 +1,6 @@
 package com.hamza.bitma.controller;
 
+import com.google.firebase.auth.FirebaseAuthException;
 import com.hamza.bitma.dto.model.OfferDto;
 import com.hamza.bitma.entity.Offer;
 import com.hamza.bitma.service.OfferService;
@@ -26,7 +27,7 @@ public class OfferController {
     }
 
     @PostMapping
-    public ResponseEntity<OfferDto> createOffer(@RequestParam("images") MultipartFile[] files, @RequestParam Map<String, String> offerDto) {
+    public ResponseEntity<OfferDto> createOffer(@RequestParam("images") MultipartFile[] files, @RequestParam Map<String, String> offerDto) throws FirebaseAuthException {
         return offerService.createOffer(offerDto, files);
     }
 

@@ -1,5 +1,8 @@
 package com.hamza.bitma.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import com.hamza.bitma.dto.mapper.MapString;
 import com.hamza.bitma.dto.mapperInterface.IMapperDto;
 import com.hamza.bitma.dto.model.OfferDto;
@@ -40,18 +43,14 @@ public class OfferService {
         return offerMapper.convertPageToPageDto(offerRepository.findAll(pageable), OfferDto.class);
     }
 
-    public ResponseEntity<OfferDto> createOffer(Map<String,String> offerDto, MultipartFile[] files) {
+    public ResponseEntity<OfferDto> createOffer(Map<String,String> offerDto, MultipartFile[] files) throws FirebaseAuthException {
         Offer offer = mapString.convertToEntity(offerDto, Offer.class);
 
         offer.setAvailableFrom(LocalDate.parse(offerDto.get("availableFrom")));
         System.out.println("createOffer" + offer.getAvailableFrom());
 
-        User user = userService.findById(Long.parseLong(offerDto.get("user")));
+        UserRecord userRecord = FirebaseAuth.getInstance().getUser(offer.getUserId());
 
-        if( user == null) {
-            return new ResponseEntity("User not found", HttpStatus.BAD_REQUEST);
-        }
-        offer.setUser(user);
         offer.setCity(offer.getCity().toLowerCase());
         Offer offerSaved = offerRepository.save(offer);
         offerImageService.saveOfferImages(offerSaved, files);
